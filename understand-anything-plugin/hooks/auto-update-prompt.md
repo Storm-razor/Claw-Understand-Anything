@@ -46,10 +46,12 @@ Incrementally update the knowledge graph using deterministic structural fingerpr
    2. Write the step 7 file list to `$PROJECT_ROOT/.understand-anything/intermediate/changed-files-pre.json` as a JSON array of relative paths.
 
    3. Resolve `$PLUGIN_ROOT`:
-      - Use `$CLAUDE_PLUGIN_ROOT` if set (Claude Code's hook context sets this).
-      - Otherwise try `$HOME/.understand-anything-plugin`.
+      - Prefer `$UA_PLUGIN_DIR` if set.
+      - Otherwise use `$CLAUDE_PLUGIN_ROOT` if set (Claude Code's hook context sets this).
+      - Otherwise try the OpenClaw default install path: `$HOME/.openclaw/workspace/.understand-anything-plugin`.
+      - Otherwise try the checked-out repo path: `${UA_REPO_DIR:-${UA_DIR:-$HOME/.openclaw/workspace/.understand-anything/repo}}/understand-anything-plugin`.
       - Validate the chosen candidate by checking `$candidate/packages/core/dist/ignore-filter.js` exists.
-      - If neither resolves: report "Cannot locate plugin install at `$CLAUDE_PLUGIN_ROOT` or `$HOME/.understand-anything-plugin`; auto-update aborted. Run `/understand` to re-baseline." and **STOP**. Do **not** silently skip — silent skip reproduces issue #153.
+      - If none resolves: report "Cannot locate plugin install from `UA_PLUGIN_DIR`, `CLAUDE_PLUGIN_ROOT`, the OpenClaw default plugin path, or the configured repo checkout; auto-update aborted. Run `/understand` to re-baseline." and **STOP**. Do **not** silently skip — silent skip reproduces issue #153.
 
    4. Write `$PROJECT_ROOT/.understand-anything/intermediate/ignore-filter.mjs`:
       ```javascript

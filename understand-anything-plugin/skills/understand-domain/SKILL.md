@@ -42,26 +42,20 @@ fi
 
 Use `$PROJECT_ROOT` (not the bare CWD) for every reference to "the current project" / `<project-root>` in subsequent phases.
 
-**Important:** do **not** assume the plugin root is simply two directories above the skill path string. In many installations `~/.agents/skills/understand-domain` is a symlink into the real plugin checkout. Prefer runtime-provided plugin roots first (for Claude), then fall back to universal symlinks, skill symlink resolution, and common clone-based install paths.
+**Important:** OpenClaw installs copy files instead of using symlinks. Resolve all runtime paths from environment variables first, then fall back to the OpenClaw workspace defaults. Do **not** derive the plugin root from `~/.agents/skills/...`.
 
 Resolve the plugin root like this:
 
 ```bash
-SKILL_REAL=$(realpath ~/.agents/skills/understand-domain 2>/dev/null || readlink -f ~/.agents/skills/understand-domain 2>/dev/null || echo "")
-SELF_RELATIVE=$([ -n "$SKILL_REAL" ] && cd "$SKILL_REAL/../.." 2>/dev/null && pwd || echo "")
-COPILOT_SKILL_REAL=$(realpath ~/.copilot/skills/understand-domain 2>/dev/null || readlink -f ~/.copilot/skills/understand-domain 2>/dev/null || echo "")
-COPILOT_SELF_RELATIVE=$([ -n "$COPILOT_SKILL_REAL" ] && cd "$COPILOT_SKILL_REAL/../.." 2>/dev/null && pwd || echo "")
+REPO_CHECKOUT="${UA_REPO_DIR:-${UA_DIR:-$HOME/.openclaw/workspace/.understand-anything/repo}}"
+SKILLS_ROOT="${UA_SKILLS_DIR:-$HOME/.openclaw/workspace/skills/understand-anything}"
 
 PLUGIN_ROOT=""
 for candidate in \
-  "${CLAUDE_PLUGIN_ROOT}" \
-  "$HOME/.understand-anything-plugin" \
-  "$SELF_RELATIVE" \
-  "$COPILOT_SELF_RELATIVE" \
-  "$HOME/.codex/understand-anything/understand-anything-plugin" \
-  "$HOME/.opencode/understand-anything/understand-anything-plugin" \
-  "$HOME/.pi/understand-anything/understand-anything-plugin" \
-  "$HOME/understand-anything/understand-anything-plugin"; do
+  "${UA_PLUGIN_DIR:-}" \
+  "${CLAUDE_PLUGIN_ROOT:-}" \
+  "$HOME/.openclaw/workspace/.understand-anything-plugin" \
+  "$REPO_CHECKOUT/understand-anything-plugin"; do
   if [ -n "$candidate" ] && [ -f "$candidate/package.json" ] && [ -f "$candidate/pnpm-workspace.yaml" ]; then
     PLUGIN_ROOT="$candidate"
     break
@@ -71,15 +65,32 @@ done
 if [ -z "$PLUGIN_ROOT" ]; then
   echo "Error: Cannot find the understand-anything plugin root."
   echo "Checked:"
+  echo "  - ${UA_PLUGIN_DIR:-<unset UA_PLUGIN_DIR>}"
   echo "  - ${CLAUDE_PLUGIN_ROOT:-<unset CLAUDE_PLUGIN_ROOT>}"
-  echo "  - $HOME/.understand-anything-plugin"
-  echo "  - ${SELF_RELATIVE:-<unresolved path derived from ~/.agents/skills/understand-domain>}"
-  echo "  - ${COPILOT_SELF_RELATIVE:-<unresolved path derived from ~/.copilot/skills/understand-domain>}"
-  echo "  - $HOME/.codex/understand-anything/understand-anything-plugin"
-  echo "  - $HOME/.opencode/understand-anything/understand-anything-plugin"
-  echo "  - $HOME/.pi/understand-anything/understand-anything-plugin"
-  echo "  - $HOME/understand-anything/understand-anything-plugin"
-  echo "Make sure the plugin is installed correctly."
+  echo "  - $HOME/.openclaw/workspace/.understand-anything-plugin"
+  echo "  - $REPO_CHECKOUT/understand-anything-plugin"
+  echo "Set UA_PLUGIN_DIR if you installed the plugin to a custom location."
+  exit 1
+fi
+
+SKILL_DIR=""
+for candidate in \
+  "${SKILLS_ROOT}/understand-domain" \
+  "$PLUGIN_ROOT/skills/understand-domain" \
+  "$REPO_CHECKOUT/understand-anything-plugin/skills/understand-domain"; do
+  if [ -n "$candidate" ] && [ -f "$candidate/SKILL.md" ]; then
+    SKILL_DIR="$candidate"
+    break
+  fi
+done
+
+if [ -z "$SKILL_DIR" ]; then
+  echo "Error: Cannot find the copied understand-domain skill directory."
+  echo "Checked:"
+  echo "  - ${SKILLS_ROOT}/understand-domain"
+  echo "  - $PLUGIN_ROOT/skills/understand-domain"
+  echo "  - $REPO_CHECKOUT/understand-anything-plugin/skills/understand-domain"
+  echo "Set UA_SKILLS_DIR if you installed the skills to a custom location."
   exit 1
 fi
 ```
@@ -98,7 +109,7 @@ The preprocessing script does NOT produce a domain graph — it produces **raw m
 
 1. Run the preprocessing script bundled with this skill, passing `$PROJECT_ROOT` from Phase 0:
    ```
-   python ./extract-domain-context.py "$PROJECT_ROOT"
+   python "$SKILL_DIR/extract-domain-context.py" "$PROJECT_ROOT"
    ```
    This outputs `$PROJECT_ROOT/.understand-anything/intermediate/domain-context.json` containing:
    - File tree (respecting `.gitignore`)

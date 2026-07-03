@@ -72,51 +72,62 @@ Determine whether to run a full analysis or incremental update.
      Set `UNDERSTAND_NO_WORKTREE_REDIRECT=1` if you intentionally want a per-worktree graph (rare — most users want the redirect).
 1.5. **Ensure the plugin is built.** Later phases invoke Node scripts that import `@understand-anything/core`. On a fresh install `packages/core/dist/` does not exist yet — build once.
 
-   **Important:** do **not** assume the plugin root is simply two directories above the skill path string. In many installations `~/.agents/skills/understand` is a symlink into the real plugin checkout. Prefer runtime-provided plugin roots first (for Claude), then fall back to universal symlinks, skill symlink resolution, and common clone-based install paths.
+  **Important:** OpenClaw installs copy files instead of using symlinks. Resolve all runtime paths from environment variables first, then fall back to the OpenClaw workspace defaults. Do **not** derive the plugin root from `~/.agents/skills/...`.
 
-   Resolve the plugin root like this:
+  Resolve `PLUGIN_ROOT` and `SKILL_DIR` like this:
 
-   ```bash
-   SKILL_REAL=$(realpath ~/.agents/skills/understand 2>/dev/null || readlink -f ~/.agents/skills/understand 2>/dev/null || echo "")
-   SELF_RELATIVE=$([ -n "$SKILL_REAL" ] && cd "$SKILL_REAL/../.." 2>/dev/null && pwd || echo "")
-   COPILOT_SKILL_REAL=$(realpath ~/.copilot/skills/understand 2>/dev/null || readlink -f ~/.copilot/skills/understand 2>/dev/null || echo "")
-   COPILOT_SELF_RELATIVE=$([ -n "$COPILOT_SKILL_REAL" ] && cd "$COPILOT_SKILL_REAL/../.." 2>/dev/null && pwd || echo "")
+  ```bash
+  REPO_CHECKOUT="${UA_REPO_DIR:-${UA_DIR:-$HOME/.openclaw/workspace/.understand-anything/repo}}"
+  SKILLS_ROOT="${UA_SKILLS_DIR:-$HOME/.openclaw/workspace/skills/understand-anything}"
 
-   PLUGIN_ROOT=""
-   for candidate in \
-     "${CLAUDE_PLUGIN_ROOT}" \
-     "$HOME/.understand-anything-plugin" \
-     "$SELF_RELATIVE" \
-     "$COPILOT_SELF_RELATIVE" \
-     "$HOME/.codex/understand-anything/understand-anything-plugin" \
-     "$HOME/.opencode/understand-anything/understand-anything-plugin" \
-     "$HOME/.pi/understand-anything/understand-anything-plugin" \
-     "$HOME/understand-anything/understand-anything-plugin"; do
-     if [ -n "$candidate" ] && [ -f "$candidate/package.json" ] && [ -f "$candidate/pnpm-workspace.yaml" ]; then
-       PLUGIN_ROOT="$candidate"
-       break
-     fi
-   done
+  PLUGIN_ROOT=""
+  for candidate in \
+    "${UA_PLUGIN_DIR:-}" \
+    "${CLAUDE_PLUGIN_ROOT:-}" \
+    "$HOME/.openclaw/workspace/.understand-anything-plugin" \
+    "$REPO_CHECKOUT/understand-anything-plugin"; do
+    if [ -n "$candidate" ] && [ -f "$candidate/package.json" ] && [ -f "$candidate/pnpm-workspace.yaml" ]; then
+      PLUGIN_ROOT="$candidate"
+      break
+    fi
+  done
 
-   if [ -z "$PLUGIN_ROOT" ]; then
-     echo "Error: Cannot find the understand-anything plugin root."
-     echo "Checked:"
-     echo "  - ${CLAUDE_PLUGIN_ROOT:-<unset CLAUDE_PLUGIN_ROOT>}"
-     echo "  - $HOME/.understand-anything-plugin"
-     echo "  - ${SELF_RELATIVE:-<unresolved path derived from ~/.agents/skills/understand>}"
-     echo "  - ${COPILOT_SELF_RELATIVE:-<unresolved path derived from ~/.copilot/skills/understand>}"
-     echo "  - $HOME/.codex/understand-anything/understand-anything-plugin"
-     echo "  - $HOME/.opencode/understand-anything/understand-anything-plugin"
-     echo "  - $HOME/.pi/understand-anything/understand-anything-plugin"
-     echo "  - $HOME/understand-anything/understand-anything-plugin"
-     echo "Make sure the plugin is installed correctly."
-     exit 1
-   fi
+  SKILL_DIR=""
+  for candidate in \
+    "${SKILLS_ROOT}/understand" \
+    "$PLUGIN_ROOT/skills/understand" \
+    "$REPO_CHECKOUT/understand-anything-plugin/skills/understand"; do
+    if [ -n "$candidate" ] && [ -f "$candidate/SKILL.md" ]; then
+      SKILL_DIR="$candidate"
+      break
+    fi
+  done
 
-   if [ ! -f "$PLUGIN_ROOT/packages/core/dist/index.js" ]; then
-     cd "$PLUGIN_ROOT" && (pnpm install --frozen-lockfile 2>/dev/null || pnpm install) && pnpm --filter @understand-anything/core build
-   fi
-   ```
+  if [ -z "$PLUGIN_ROOT" ]; then
+    echo "Error: Cannot find the understand-anything plugin root."
+    echo "Checked:"
+    echo "  - ${UA_PLUGIN_DIR:-<unset UA_PLUGIN_DIR>}"
+    echo "  - ${CLAUDE_PLUGIN_ROOT:-<unset CLAUDE_PLUGIN_ROOT>}"
+    echo "  - $HOME/.openclaw/workspace/.understand-anything-plugin"
+    echo "  - $REPO_CHECKOUT/understand-anything-plugin"
+    echo "Set UA_PLUGIN_DIR if you installed the plugin to a custom location."
+    exit 1
+  fi
+
+  if [ -z "$SKILL_DIR" ]; then
+    echo "Error: Cannot find the copied understand skill directory."
+    echo "Checked:"
+    echo "  - ${SKILLS_ROOT}/understand"
+    echo "  - $PLUGIN_ROOT/skills/understand"
+    echo "  - $REPO_CHECKOUT/understand-anything-plugin/skills/understand"
+    echo "Set UA_SKILLS_DIR if you installed the skills to a custom location."
+    exit 1
+  fi
+
+  if [ ! -f "$PLUGIN_ROOT/packages/core/dist/index.js" ]; then
+    cd "$PLUGIN_ROOT" && (pnpm install --frozen-lockfile 2>/dev/null || pnpm install) && pnpm --filter @understand-anything/core build
+  fi
+  ```
 
    If `pnpm` is missing, report to the user: "Install Node.js ≥ 22 and pnpm ≥ 10, then re-run `/understand`."
 
