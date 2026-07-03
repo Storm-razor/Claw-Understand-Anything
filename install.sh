@@ -9,7 +9,7 @@
 #   ./install.sh --help
 #
 # Curl-pipe usage:
-#   curl -fsSL https://raw.githubusercontent.com/Egonex-AI/Understand-Anything/main/install.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/Storm-razor/Claw-Understand-Anything/main/install.sh | bash
 #
 # Environment:
 #   UA_REPO_URL   Override git clone URL
@@ -20,7 +20,7 @@
 
 set -euo pipefail
 
-REPO_URL="${UA_REPO_URL:-https://github.com/Egonex-AI/Understand-Anything.git}"
+REPO_URL="${UA_REPO_URL:-https://github.com/Storm-razor/Claw-Understand-Anything.git}"
 REPO_DIR="${UA_REPO_DIR:-${UA_DIR:-$HOME/.openclaw/workspace/.understand-anything/repo}}"
 SKILLS_DIR="${UA_SKILLS_DIR:-$HOME/.openclaw/workspace/skills/understand-anything}"
 PLUGIN_DIR="${UA_PLUGIN_DIR:-$HOME/.openclaw/workspace/.understand-anything-plugin}"

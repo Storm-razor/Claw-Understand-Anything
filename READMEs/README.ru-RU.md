@@ -16,7 +16,7 @@
 
 <p align="center">
   <a href="#-быстрый-старт"><img src="https://img.shields.io/badge/Быстрый_старт-blue" alt="Quick Start" /></a>
-  <a href="https://github.com/Egonex-AI/Understand-Anything/blob/main/LICENSE"><img src="https://img.shields.io/badge/Лицензия-MIT-yellow" alt="License: MIT" /></a>
+  <a href="https://github.com/Storm-razor/Claw-Understand-Anything/blob/main/LICENSE"><img src="https://img.shields.io/badge/Лицензия-MIT-yellow" alt="License: MIT" /></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/Claude_Code-8A2BE2" alt="Claude Code" /></a>
   <a href="#codex"><img src="https://img.shields.io/badge/Codex-000000" alt="Codex" /></a>
   <a href="#vs-code--github-copilot"><img src="https://img.shields.io/badge/Copilot-24292e" alt="Copilot" /></a>
@@ -104,7 +104,7 @@ Understand Anything — это [плагин для Claude Code](https://code.cl
 ### 1. Установите плагин
 
 ```bash
-/plugin marketplace add Egonex-AI/Understand-Anything
+/plugin marketplace add Storm-razor/Claw-Understand-Anything
 /plugin install understand-anything
 ```
 
@@ -182,7 +182,7 @@ Understand-Anything работает с несколькими платформ�
 ### Claude Code (нативно)
 
 ```bash
-/plugin marketplace add Egonex-AI/Understand-Anything
+/plugin marketplace add Storm-razor/Claw-Understand-Anything
 /plugin install understand-anything
 ```
 
@@ -190,14 +190,14 @@ Understand-Anything работает с несколькими платформ�
 
 **macOS / Linux:**
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Egonex-AI/Understand-Anything/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Storm-razor/Claw-Understand-Anything/main/install.sh | bash
 # или передайте платформу, чтобы пропустить интерактивный выбор:
-curl -fsSL https://raw.githubusercontent.com/Egonex-AI/Understand-Anything/main/install.sh | bash -s codex
+curl -fsSL https://raw.githubusercontent.com/Storm-razor/Claw-Understand-Anything/main/install.sh | bash -s codex
 ```
 
 **Windows (PowerShell):**
 ```powershell
-iwr -useb https://raw.githubusercontent.com/Egonex-AI/Understand-Anything/main/install.ps1 | iex
+iwr -useb https://raw.githubusercontent.com/Storm-razor/Claw-Understand-Anything/main/install.ps1 | iex
 ```
 
 Установщик клонирует репозиторий в `~/.understand-anything/repo` и создаёт нужные симлинки для выбранной платформы. После установки перезапустите свой CLI/IDE.
@@ -210,7 +210,7 @@ iwr -useb https://raw.githubusercontent.com/Egonex-AI/Understand-Anything/main/i
 
 Cursor автоматически обнаруживает плагин через `.cursor-plugin/plugin.json` при клонировании этого репозитория. Ручная установка не требуется — просто склонируйте и откройте в Cursor.
 
-Если автообнаружение не сработало, установите вручную: откройте **Cursor Settings → Plugins**, вставьте `https://github.com/Egonex-AI/Understand-Anything` в поле поиска и добавьте оттуда.
+Если автообнаружение не сработало, установите вручную: откройте **Cursor Settings → Plugins**, вставьте `https://github.com/Storm-razor/Claw-Understand-Anything` в поле поиска и добавьте оттуда.
 
 ### VS Code + GitHub Copilot
 
@@ -221,13 +221,13 @@ VS Code с GitHub Copilot (v1.108+) автоматически обнаружи�
 ### Copilot CLI
 
 ```bash
-copilot plugin install Egonex-AI/Understand-Anything:understand-anything-plugin
+copilot plugin install Storm-razor/Claw-Understand-Anything:understand-anything-plugin
 ```
 
 ### Kiro CLI / IDE
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Egonex-AI/Understand-Anything/main/install.sh | bash -s kiro
+curl -fsSL https://raw.githubusercontent.com/Storm-razor/Claw-Understand-Anything/main/install.sh | bash -s kiro
 ```
 
 После установки:
@@ -348,9 +348,9 @@ git add .gitattributes .understand-anything/
 
 <a href="https://www.star-history.com/?repos=Egonex-AI%2FUnderstand-Anything&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=Egonex-AI/Understand-Anything&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/image?repos=Egonex-AI/Understand-Anything&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/image?repos=Egonex-AI/Understand-Anything&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=Storm-razor/Claw-Understand-Anything&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/image?repos=Storm-razor/Claw-Understand-Anything&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/image?repos=Storm-razor/Claw-Understand-Anything&type=date&legend=top-left" />
  </picture>
 </a>
 

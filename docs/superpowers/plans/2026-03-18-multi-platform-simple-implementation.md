@@ -427,8 +427,8 @@ git commit -m "refactor: move platform config directories to repo root for disco
   "description": "AI-powered codebase understanding — analyze, visualize, and explain any project",
   "version": "1.0.5",
   "author": { "name": "Egonex" },
-  "homepage": "https://github.com/Egonex-AI/Understand-Anything",
-  "repository": "https://github.com/Egonex-AI/Understand-Anything",
+  "homepage": "https://github.com/Storm-razor/Claw-Understand-Anything",
+  "repository": "https://github.com/Storm-razor/Claw-Understand-Anything",
   "license": "MIT",
   "keywords": ["codebase-analysis", "knowledge-graph", "architecture", "onboarding", "dashboard"],
   "skills": "./understand-anything-plugin/skills/",
@@ -446,8 +446,8 @@ Note: paths point into `understand-anything-plugin/` since the source stays nest
   "description": "AI-powered codebase understanding — analyze, visualize, and explain any project",
   "version": "1.0.5",
   "author": { "name": "Egonex" },
-  "homepage": "https://github.com/Egonex-AI/Understand-Anything",
-  "repository": "https://github.com/Egonex-AI/Understand-Anything",
+  "homepage": "https://github.com/Storm-razor/Claw-Understand-Anything",
+  "repository": "https://github.com/Storm-razor/Claw-Understand-Anything",
   "license": "MIT",
   "keywords": ["codebase-analysis", "knowledge-graph", "architecture", "onboarding", "dashboard"]
 }
