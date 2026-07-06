@@ -23,14 +23,14 @@ Start the Understand Anything dashboard to visualize the knowledge graph for the
 
    Use the Bash tool to resolve:
    ```bash
-   REPO_CHECKOUT="${MYCLAW_CUSTOM_ENV_REPO_DIR:-${MYCLAW_CUSTOM_ENV_DIR:-${UA_REPO_DIR:-${UA_DIR:-$HOME/.openclaw/workspace/.understand-anything/repo}}}}"
+   REPO_CHECKOUT="${MYCLAW_CUSTOM_ENV_REPO_DIR:-${MYCLAW_CUSTOM_ENV_DIR:-${UA_REPO_DIR:-${UA_DIR:-$HOME/.openclaw/workspace-ts-aibot/.understand-anything/repo}}}}"
 
    PLUGIN_ROOT=""
    for candidate in \
      "${MYCLAW_CUSTOM_ENV_PLUGIN_DIR:-}" \
      "${UA_PLUGIN_DIR:-}" \
      "${CLAUDE_PLUGIN_ROOT:-}" \
-     "$HOME/.openclaw/workspace/.understand-anything-plugin" \
+     "$HOME/.openclaw/workspace-ts-aibot/.understand-anything-plugin" \
      "$REPO_CHECKOUT/understand-anything-plugin"; do
      if [ -n "$candidate" ] && [ -d "$candidate/packages/dashboard" ]; then
        PLUGIN_ROOT="$candidate"
@@ -44,7 +44,7 @@ Start the Understand Anything dashboard to visualize the knowledge graph for the
      echo "  - ${MYCLAW_CUSTOM_ENV_PLUGIN_DIR:-<unset MYCLAW_CUSTOM_ENV_PLUGIN_DIR>}"
      echo "  - ${UA_PLUGIN_DIR:-<unset UA_PLUGIN_DIR>}"
      echo "  - ${CLAUDE_PLUGIN_ROOT:-<unset CLAUDE_PLUGIN_ROOT>}"
-     echo "  - $HOME/.openclaw/workspace/.understand-anything-plugin"
+     echo "  - $HOME/.openclaw/workspace-ts-aibot/.understand-anything-plugin"
      echo "  - $REPO_CHECKOUT/understand-anything-plugin"
      echo "Set MYCLAW_CUSTOM_ENV_PLUGIN_DIR if you installed the plugin to a custom location."
      exit 1

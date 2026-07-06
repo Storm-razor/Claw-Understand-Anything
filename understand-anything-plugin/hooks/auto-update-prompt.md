@@ -49,8 +49,8 @@ Incrementally update the knowledge graph using deterministic structural fingerpr
       - Prefer `$MYCLAW_CUSTOM_ENV_PLUGIN_DIR` if set.
       - Otherwise use `$CLAUDE_PLUGIN_ROOT` if set (Claude Code's hook context sets this).
       - Otherwise try `$UA_PLUGIN_DIR` if set for backward compatibility.
-      - Otherwise try the OpenClaw default install path: `$HOME/.openclaw/workspace/.understand-anything-plugin`.
-      - Otherwise try the checked-out repo path: `${MYCLAW_CUSTOM_ENV_REPO_DIR:-${MYCLAW_CUSTOM_ENV_DIR:-${UA_REPO_DIR:-${UA_DIR:-$HOME/.openclaw/workspace/.understand-anything/repo}}}}/understand-anything-plugin`.
+      - Otherwise try the OpenClaw default install path: `$HOME/.openclaw/workspace-ts-aibot/.understand-anything-plugin`.
+      - Otherwise try the checked-out repo path: `${MYCLAW_CUSTOM_ENV_REPO_DIR:-${MYCLAW_CUSTOM_ENV_DIR:-${UA_REPO_DIR:-${UA_DIR:-$HOME/.openclaw/workspace-ts-aibot/.understand-anything/repo}}}}/understand-anything-plugin`.
       - Validate the chosen candidate by checking `$candidate/packages/core/dist/ignore-filter.js` exists.
       - If none resolves: report "Cannot locate plugin install from `MYCLAW_CUSTOM_ENV_PLUGIN_DIR`, `CLAUDE_PLUGIN_ROOT`, `UA_PLUGIN_DIR`, the OpenClaw default plugin path, or the configured repo checkout; auto-update aborted. Run `/understand` to re-baseline." and **STOP**. Do **not** silently skip — silent skip reproduces issue #153.
 

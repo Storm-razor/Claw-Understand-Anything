@@ -23,9 +23,9 @@
 set -euo pipefail
 
 REPO_URL="${MYCLAW_CUSTOM_ENV_REPO_URL:-${UA_REPO_URL:-https://github.com/Storm-razor/Claw-Understand-Anything.git}}"
-REPO_DIR="${MYCLAW_CUSTOM_ENV_REPO_DIR:-${MYCLAW_CUSTOM_ENV_DIR:-${UA_REPO_DIR:-${UA_DIR:-$HOME/.openclaw/workspace/.understand-anything/repo}}}}"
-SKILLS_DIR="${MYCLAW_CUSTOM_ENV_SKILLS_DIR:-${UA_SKILLS_DIR:-$HOME/.openclaw/workspace/skills/understand-anything}}"
-PLUGIN_DIR="${MYCLAW_CUSTOM_ENV_PLUGIN_DIR:-${UA_PLUGIN_DIR:-$HOME/.openclaw/workspace/.understand-anything-plugin}}"
+REPO_DIR="${MYCLAW_CUSTOM_ENV_REPO_DIR:-${MYCLAW_CUSTOM_ENV_DIR:-${UA_REPO_DIR:-${UA_DIR:-$HOME/.openclaw/workspace-ts-aibot/.understand-anything/repo}}}}"
+SKILLS_DIR="${MYCLAW_CUSTOM_ENV_SKILLS_DIR:-${UA_SKILLS_DIR:-$HOME/.openclaw/workspace-ts-aibot/skills/understand-anything}}"
+PLUGIN_DIR="${MYCLAW_CUSTOM_ENV_PLUGIN_DIR:-${UA_PLUGIN_DIR:-$HOME/.openclaw/workspace-ts-aibot/.understand-anything-plugin}}"
 
 platform_id() { printf '%s\n' 'openclaw'; }
 
@@ -159,9 +159,9 @@ Supported platform:
   - openclaw
 
 Default paths:
-  Repo:   \$HOME/.openclaw/workspace/.understand-anything/repo
-  Plugin: \$HOME/.openclaw/workspace/.understand-anything-plugin
-  Skills: \$HOME/.openclaw/workspace/skills/understand-anything
+  Repo:   \$HOME/.openclaw/workspace-ts-aibot/.understand-anything/repo
+  Plugin: \$HOME/.openclaw/workspace-ts-aibot/.understand-anything-plugin
+  Skills: \$HOME/.openclaw/workspace-ts-aibot/skills/understand-anything
 
 Environment:
   MYCLAW_CUSTOM_ENV_REPO_URL   Override git clone URL
