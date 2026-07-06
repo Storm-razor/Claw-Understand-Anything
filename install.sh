@@ -12,18 +12,20 @@
 #   curl -fsSL https://raw.githubusercontent.com/Storm-razor/Claw-Understand-Anything/main/install.sh | bash
 #
 # Environment:
-#   UA_REPO_URL   Override git clone URL
-#   UA_REPO_DIR   Override checkout directory
-#   UA_SKILLS_DIR Override installed skills directory
-#   UA_PLUGIN_DIR Override installed plugin directory
-#   UA_DIR        Backward-compatible alias for UA_REPO_DIR
+#   MYCLAW_CUSTOM_ENV_REPO_URL   Override git clone URL
+#   MYCLAW_CUSTOM_ENV_REPO_DIR   Override checkout directory
+#   MYCLAW_CUSTOM_ENV_SKILLS_DIR Override installed skills directory
+#   MYCLAW_CUSTOM_ENV_PLUGIN_DIR Override installed plugin directory
+#   MYCLAW_CUSTOM_ENV_DIR        Backward-compatible alias for MYCLAW_CUSTOM_ENV_REPO_DIR
+#   UA_REPO_URL / UA_REPO_DIR / UA_SKILLS_DIR / UA_PLUGIN_DIR / UA_DIR remain
+#   supported as compatibility fallbacks
 
 set -euo pipefail
 
-REPO_URL="${UA_REPO_URL:-https://github.com/Storm-razor/Claw-Understand-Anything.git}"
-REPO_DIR="${UA_REPO_DIR:-${UA_DIR:-$HOME/.openclaw/workspace/.understand-anything/repo}}"
-SKILLS_DIR="${UA_SKILLS_DIR:-$HOME/.openclaw/workspace/skills/understand-anything}"
-PLUGIN_DIR="${UA_PLUGIN_DIR:-$HOME/.openclaw/workspace/.understand-anything-plugin}"
+REPO_URL="${MYCLAW_CUSTOM_ENV_REPO_URL:-${UA_REPO_URL:-https://github.com/Storm-razor/Claw-Understand-Anything.git}}"
+REPO_DIR="${MYCLAW_CUSTOM_ENV_REPO_DIR:-${MYCLAW_CUSTOM_ENV_DIR:-${UA_REPO_DIR:-${UA_DIR:-$HOME/.openclaw/workspace/.understand-anything/repo}}}}"
+SKILLS_DIR="${MYCLAW_CUSTOM_ENV_SKILLS_DIR:-${UA_SKILLS_DIR:-$HOME/.openclaw/workspace/skills/understand-anything}}"
+PLUGIN_DIR="${MYCLAW_CUSTOM_ENV_PLUGIN_DIR:-${UA_PLUGIN_DIR:-$HOME/.openclaw/workspace/.understand-anything-plugin}}"
 
 platform_id() { printf '%s\n' 'openclaw'; }
 
@@ -105,9 +107,9 @@ cmd_install() {
   printf '  Skills path:   %s\n' "$SKILLS_DIR"
   printf '  Restart OpenClaw to pick up the copied skills.\n'
   printf '\n  Optional environment overrides:\n'
-  printf '  export UA_REPO_DIR=%q\n' "$REPO_DIR"
-  printf '  export UA_PLUGIN_DIR=%q\n' "$PLUGIN_DIR"
-  printf '  export UA_SKILLS_DIR=%q\n' "$SKILLS_DIR"
+  printf '  export MYCLAW_CUSTOM_ENV_REPO_DIR=%q\n' "$REPO_DIR"
+  printf '  export MYCLAW_CUSTOM_ENV_PLUGIN_DIR=%q\n' "$PLUGIN_DIR"
+  printf '  export MYCLAW_CUSTOM_ENV_SKILLS_DIR=%q\n' "$SKILLS_DIR"
 }
 
 cmd_uninstall() {
@@ -162,11 +164,13 @@ Default paths:
   Skills: \$HOME/.openclaw/workspace/skills/understand-anything
 
 Environment:
-  UA_REPO_URL   Override git clone URL
-  UA_REPO_DIR   Override checkout directory
-  UA_SKILLS_DIR Override installed skills directory
-  UA_PLUGIN_DIR Override installed plugin directory
-  UA_DIR        Backward-compatible alias for UA_REPO_DIR
+  MYCLAW_CUSTOM_ENV_REPO_URL   Override git clone URL
+  MYCLAW_CUSTOM_ENV_REPO_DIR   Override checkout directory
+  MYCLAW_CUSTOM_ENV_SKILLS_DIR Override installed skills directory
+  MYCLAW_CUSTOM_ENV_PLUGIN_DIR Override installed plugin directory
+  MYCLAW_CUSTOM_ENV_DIR        Backward-compatible alias for MYCLAW_CUSTOM_ENV_REPO_DIR
+  UA_REPO_URL / UA_REPO_DIR / UA_SKILLS_DIR / UA_PLUGIN_DIR / UA_DIR remain
+  supported as compatibility fallbacks
 USAGE
 }
 

@@ -22,8 +22,25 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-$RepoUrl    = if ($env:UA_REPO_URL) { $env:UA_REPO_URL } else { 'https://github.com/Storm-razor/Claw-Understand-Anything.git' }
-$RepoDir    = if ($env:UA_DIR)      { $env:UA_DIR }      else { Join-Path $HOME '.understand-anything\repo' }
+$RepoUrl = if ($env:MYCLAW_CUSTOM_ENV_REPO_URL) {
+    $env:MYCLAW_CUSTOM_ENV_REPO_URL
+} elseif ($env:UA_REPO_URL) {
+    $env:UA_REPO_URL
+} else {
+    'https://github.com/Storm-razor/Claw-Understand-Anything.git'
+}
+
+$RepoDir = if ($env:MYCLAW_CUSTOM_ENV_REPO_DIR) {
+    $env:MYCLAW_CUSTOM_ENV_REPO_DIR
+} elseif ($env:MYCLAW_CUSTOM_ENV_DIR) {
+    $env:MYCLAW_CUSTOM_ENV_DIR
+} elseif ($env:UA_REPO_DIR) {
+    $env:UA_REPO_DIR
+} elseif ($env:UA_DIR) {
+    $env:UA_DIR
+} else {
+    Join-Path $HOME '.understand-anything\repo'
+}
 $PluginLink = Join-Path $HOME '.understand-anything-plugin'
 
 # Platform table — Target = skills directory; Style = "per-skill" | "folder"
@@ -57,8 +74,10 @@ Supported platforms:
 $($Platforms.Keys -join ', ')
 
 Environment:
-  UA_REPO_URL   Override clone URL
-  UA_DIR        Override clone destination (default: %USERPROFILE%\.understand-anything\repo)
+  MYCLAW_CUSTOM_ENV_REPO_URL  Override clone URL
+  MYCLAW_CUSTOM_ENV_REPO_DIR  Override clone destination
+  MYCLAW_CUSTOM_ENV_DIR       Backward-compatible alias for MYCLAW_CUSTOM_ENV_REPO_DIR
+  UA_REPO_URL / UA_REPO_DIR / UA_DIR remain supported as compatibility fallbacks
 "@
 }
 

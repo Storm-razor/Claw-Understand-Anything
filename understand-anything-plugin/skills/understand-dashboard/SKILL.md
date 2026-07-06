@@ -23,10 +23,11 @@ Start the Understand Anything dashboard to visualize the knowledge graph for the
 
    Use the Bash tool to resolve:
    ```bash
-   REPO_CHECKOUT="${UA_REPO_DIR:-${UA_DIR:-$HOME/.openclaw/workspace/.understand-anything/repo}}"
+   REPO_CHECKOUT="${MYCLAW_CUSTOM_ENV_REPO_DIR:-${MYCLAW_CUSTOM_ENV_DIR:-${UA_REPO_DIR:-${UA_DIR:-$HOME/.openclaw/workspace/.understand-anything/repo}}}}"
 
    PLUGIN_ROOT=""
    for candidate in \
+     "${MYCLAW_CUSTOM_ENV_PLUGIN_DIR:-}" \
      "${UA_PLUGIN_DIR:-}" \
      "${CLAUDE_PLUGIN_ROOT:-}" \
      "$HOME/.openclaw/workspace/.understand-anything-plugin" \
@@ -40,11 +41,12 @@ Start the Understand Anything dashboard to visualize the knowledge graph for the
    if [ -z "$PLUGIN_ROOT" ]; then
      echo "Error: Cannot find the understand-anything plugin root."
      echo "Checked:"
+     echo "  - ${MYCLAW_CUSTOM_ENV_PLUGIN_DIR:-<unset MYCLAW_CUSTOM_ENV_PLUGIN_DIR>}"
      echo "  - ${UA_PLUGIN_DIR:-<unset UA_PLUGIN_DIR>}"
      echo "  - ${CLAUDE_PLUGIN_ROOT:-<unset CLAUDE_PLUGIN_ROOT>}"
      echo "  - $HOME/.openclaw/workspace/.understand-anything-plugin"
      echo "  - $REPO_CHECKOUT/understand-anything-plugin"
-     echo "Set UA_PLUGIN_DIR if you installed the plugin to a custom location."
+     echo "Set MYCLAW_CUSTOM_ENV_PLUGIN_DIR if you installed the plugin to a custom location."
      exit 1
    fi
    ```

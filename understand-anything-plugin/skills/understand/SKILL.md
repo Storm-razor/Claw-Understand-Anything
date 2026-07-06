@@ -77,13 +77,14 @@ Determine whether to run a full analysis or incremental update.
   Resolve `PLUGIN_ROOT` and `SKILL_DIR` like this:
 
   ```bash
-  REPO_CHECKOUT="${UA_REPO_DIR:-${UA_DIR:-$HOME/.openclaw/workspace/.understand-anything/repo}}"
-  SKILLS_ROOT="${UA_SKILLS_DIR:-$HOME/.openclaw/workspace/skills/understand-anything}"
+  REPO_CHECKOUT="${MYCLAW_CUSTOM_ENV_REPO_DIR:-${MYCLAW_CUSTOM_ENV_DIR:-${UA_REPO_DIR:-${UA_DIR:-$HOME/.openclaw/workspace/.understand-anything/repo}}}}"
+  SKILLS_ROOT="${MYCLAW_CUSTOM_ENV_SKILLS_DIR:-${UA_SKILLS_DIR:-$HOME/.openclaw/workspace/skills/understand-anything}}"
 
   PLUGIN_ROOT=""
   for candidate in \
-    "${UA_PLUGIN_DIR:-}" \
+    "${MYCLAW_CUSTOM_ENV_PLUGIN_DIR:-}" \
     "${CLAUDE_PLUGIN_ROOT:-}" \
+    "${UA_PLUGIN_DIR:-}" \
     "$HOME/.openclaw/workspace/.understand-anything-plugin" \
     "$REPO_CHECKOUT/understand-anything-plugin"; do
     if [ -n "$candidate" ] && [ -f "$candidate/package.json" ] && [ -f "$candidate/pnpm-workspace.yaml" ]; then
@@ -106,11 +107,12 @@ Determine whether to run a full analysis or incremental update.
   if [ -z "$PLUGIN_ROOT" ]; then
     echo "Error: Cannot find the understand-anything plugin root."
     echo "Checked:"
-    echo "  - ${UA_PLUGIN_DIR:-<unset UA_PLUGIN_DIR>}"
+    echo "  - ${MYCLAW_CUSTOM_ENV_PLUGIN_DIR:-<unset MYCLAW_CUSTOM_ENV_PLUGIN_DIR>}"
     echo "  - ${CLAUDE_PLUGIN_ROOT:-<unset CLAUDE_PLUGIN_ROOT>}"
+    echo "  - ${UA_PLUGIN_DIR:-<unset UA_PLUGIN_DIR>}"
     echo "  - $HOME/.openclaw/workspace/.understand-anything-plugin"
     echo "  - $REPO_CHECKOUT/understand-anything-plugin"
-    echo "Set UA_PLUGIN_DIR if you installed the plugin to a custom location."
+    echo "Set MYCLAW_CUSTOM_ENV_PLUGIN_DIR if you installed the plugin to a custom location."
     exit 1
   fi
 
@@ -120,7 +122,7 @@ Determine whether to run a full analysis or incremental update.
     echo "  - ${SKILLS_ROOT}/understand"
     echo "  - $PLUGIN_ROOT/skills/understand"
     echo "  - $REPO_CHECKOUT/understand-anything-plugin/skills/understand"
-    echo "Set UA_SKILLS_DIR if you installed the skills to a custom location."
+    echo "Set MYCLAW_CUSTOM_ENV_SKILLS_DIR if you installed the skills to a custom location."
     exit 1
   fi
 

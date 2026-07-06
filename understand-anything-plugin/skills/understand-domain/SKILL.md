@@ -47,11 +47,12 @@ Use `$PROJECT_ROOT` (not the bare CWD) for every reference to "the current proje
 Resolve the plugin root like this:
 
 ```bash
-REPO_CHECKOUT="${UA_REPO_DIR:-${UA_DIR:-$HOME/.openclaw/workspace/.understand-anything/repo}}"
-SKILLS_ROOT="${UA_SKILLS_DIR:-$HOME/.openclaw/workspace/skills/understand-anything}"
+REPO_CHECKOUT="${MYCLAW_CUSTOM_ENV_REPO_DIR:-${MYCLAW_CUSTOM_ENV_DIR:-${UA_REPO_DIR:-${UA_DIR:-$HOME/.openclaw/workspace/.understand-anything/repo}}}}"
+SKILLS_ROOT="${MYCLAW_CUSTOM_ENV_SKILLS_DIR:-${UA_SKILLS_DIR:-$HOME/.openclaw/workspace/skills/understand-anything}}"
 
 PLUGIN_ROOT=""
 for candidate in \
+  "${MYCLAW_CUSTOM_ENV_PLUGIN_DIR:-}" \
   "${UA_PLUGIN_DIR:-}" \
   "${CLAUDE_PLUGIN_ROOT:-}" \
   "$HOME/.openclaw/workspace/.understand-anything-plugin" \
@@ -65,11 +66,12 @@ done
 if [ -z "$PLUGIN_ROOT" ]; then
   echo "Error: Cannot find the understand-anything plugin root."
   echo "Checked:"
+  echo "  - ${MYCLAW_CUSTOM_ENV_PLUGIN_DIR:-<unset MYCLAW_CUSTOM_ENV_PLUGIN_DIR>}"
   echo "  - ${UA_PLUGIN_DIR:-<unset UA_PLUGIN_DIR>}"
   echo "  - ${CLAUDE_PLUGIN_ROOT:-<unset CLAUDE_PLUGIN_ROOT>}"
   echo "  - $HOME/.openclaw/workspace/.understand-anything-plugin"
   echo "  - $REPO_CHECKOUT/understand-anything-plugin"
-  echo "Set UA_PLUGIN_DIR if you installed the plugin to a custom location."
+  echo "Set MYCLAW_CUSTOM_ENV_PLUGIN_DIR if you installed the plugin to a custom location."
   exit 1
 fi
 
@@ -90,7 +92,7 @@ if [ -z "$SKILL_DIR" ]; then
   echo "  - ${SKILLS_ROOT}/understand-domain"
   echo "  - $PLUGIN_ROOT/skills/understand-domain"
   echo "  - $REPO_CHECKOUT/understand-anything-plugin/skills/understand-domain"
-  echo "Set UA_SKILLS_DIR if you installed the skills to a custom location."
+  echo "Set MYCLAW_CUSTOM_ENV_SKILLS_DIR if you installed the skills to a custom location."
   exit 1
 fi
 ```
